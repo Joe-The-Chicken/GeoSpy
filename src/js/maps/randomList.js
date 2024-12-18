@@ -14,7 +14,25 @@ var round = 1;
 // AUDIOS
 var tally = document.getElementById("audio-tally");
 //
-document.getElementById("mapname").innerHTML = "Europe";
+document.getElementById("mapname").innerHTML = "Custom Map";
+
+let input = prompt("Enter your JSON array here","");
+var cords;
+if (input == null || input == "") {
+  cords = [
+    38.88281653260932, 
+    -77.18610624581545
+  ];
+} else {
+  cords = JSON.parse(input);
+}
+
+function getCords(i) {
+    return {
+        lat: cords[i*2],
+        lng: cords[i*2 + 1]
+    }
+}
 
 var currentCordsLat, currentCordsLng;
 function checkDistance() {
@@ -88,39 +106,30 @@ function playagain() {
 played = false;
 
 function generateRandomPoint(callback) {
-  // Define the bounds for the europe
-  var europeBounds = { // 37.08096381021437, 44.66221856961216 (Bottom Right)
-    north: 71.5,
-    south: 37.081,
-    west: -21,
-    east: 31.380,
-  };
-
-  var randomLat =
-    europeBounds.south +
-    Math.random() * (europeBounds.north - europeBounds.south);
-  var randomLng =
-    europeBounds.west +
-    Math.random() * (europeBounds.east - europeBounds.west);
-
   var sv = new google.maps.StreetViewService();
-  sv.getPanorama(
-    {
-      location: {
-        lat: randomLat,
-        lng: randomLng,
+  var random = Math.floor(Math.random() * (cords.length / 2));
+  try {
+    sv.getPanorama(
+      {
+        location: {
+          lat: getCords(random).lat,
+          lng: getCords(random).lng
+        },
+        radius: 250, // Set a radius for the search (adjust as needed)
+        source: google.maps.StreetViewSource.DEFAULT, 
       },
-      radius: 100000, // Set a radius for the search (adjust as needed)
-      source: google.maps.StreetViewSource.OUTDOOR, // Specify StreetView source as OUTDOOR (Google car)
-    },
-    callback
-  );
+      callback
+    );
+  } catch (error) {
+    // Handle the error here
+    console.error("Error occurred:", error);
+    // You might want to call the callback function with an error parameter here if needed
+  }
 }
 var marked = false;
 function initMap(data, status) {
   if (round <= 5) {
     document.getElementById("round").innerHTML = "" + round + "/5";
-    document.getElementById("score").innerHTML = "" + score;
     if (status == google.maps.StreetViewStatus.OK) {
       currentCordsLat = data.location.latLng.lat();
       currentCordsLng = data.location.latLng.lng();
@@ -142,10 +151,10 @@ function initMap(data, status) {
     } else generateRandomPoint(initMap);
 
     map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 2.5,
+      zoom: 2,
       maxZoom: 10,
       minZoom: 2,
-      center: { lat: 45, lng: 5 }, 
+      center: { lat: 0, lng: 0 },
       streetViewControl: false,
       showRoadLabels: false,
       zoomControl: true,
@@ -232,9 +241,9 @@ function initMap(data, status) {
             Math.floor(distance) + " km";
         }
         var points = Math.round(
-          5000 * 0.998036 * Math.exp((-10 * distance) / 15000)
+          5000 * 0.998036 * Math.exp((-10 * distance) / 40000)
         );
-        if (points <= 0) {
+        if (points < 0) {
           points = 0;
         } else if (Math.floor(distance) <= 0) {
           points = 5000;
@@ -280,6 +289,8 @@ function initMap(data, status) {
         map.fitBounds(bounds);
         played = true;
         next.value = "Next";
+
+        // document.getElementById("playerScore").innerHTML = "" + counter;
 
         next.onclick = function () {
           round++;

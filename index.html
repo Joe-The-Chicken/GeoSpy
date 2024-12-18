@@ -125,9 +125,21 @@
               <a
                 class="btn"
                 id="geoGuessr"
-                href="https://zanjidiaz.github.io/GeoSpy/"
+                href="https://geohints.com/"
                 target="_blank"
-                >View Original</a
+                >Help</a
+              >
+            </button>
+          </div>
+         <div class="wrapper-btn">
+            <div class="button-overlay"></div>
+            <button class="menu-btns">
+              <a
+                class="btn"
+                id="geoGuessr"
+                href="https://github.com/joethechickensource/GeoSpy/"
+                target="_blank"
+                >Github</a
               >
             </button>
           </div>
@@ -137,8 +149,12 @@
         <div id="button-cont">
           <div class="wrapper-btn">
             <div class="button-overlay"></div>
-            <button class="menu-btns btn font-game" id="phBtn" onclick="ph()">
-              Philippines
+            <button
+              class="menu-btns btn font-game"
+              id="worldBtn"
+              onclick="world()"
+            >
+              World
             </button>
           </div>
           <div class="wrapper-btn">
@@ -149,12 +165,20 @@
           </div>
           <div class="wrapper-btn">
             <div class="button-overlay"></div>
-            <button
-              class="menu-btns btn font-game"
-              id="worldBtn"
-              onclick="world()"
-            >
-              World
+            <button class="menu-btns btn font-game" id="naBtn" onclick="na()">
+              North America
+            </button>
+          </div>
+          <div class="wrapper-btn">
+            <div class="button-overlay"></div>
+            <button class="menu-btns btn font-game" id="phBtn" onclick="ph()">
+              Philippines
+            </button>
+          </div>
+          <div class="wrapper-btn">
+            <div class="button-overlay"></div>
+            <button class="menu-btns btn font-game" id="rdBtn" onclick="rd()">
+              Custom Map
             </button>
           </div>
         </div>
