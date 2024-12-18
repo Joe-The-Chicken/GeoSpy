@@ -14,7 +14,7 @@ var round = 1;
 // AUDIOS
 var tally = document.getElementById("audio-tally");
 //
-document.getElementById("mapname").innerHTML = "Europe";
+document.getElementById("mapname").innerHTML = "US, Canada, & Mexico";
 
 var currentCordsLat, currentCordsLng;
 function checkDistance() {
@@ -88,20 +88,20 @@ function playagain() {
 played = false;
 
 function generateRandomPoint(callback) {
-  // Define the bounds for the europe
-  var europeBounds = { // 37.08096381021437, 44.66221856961216 (Bottom Right)
-    north: 71.5,
-    south: 37.081,
-    west: -21,
-    east: 31.380,
+  // Define the bounds for North America
+  var naBounds = { // 37.08096381021437, 44.66221856961216 (Bottom Right)
+    north: 70,
+    south: 25.192,
+    west: -150,
+    east: -52.693, 
   };
 
   var randomLat =
-    europeBounds.south +
-    Math.random() * (europeBounds.north - europeBounds.south);
+    naBounds.south +
+    Math.random() * (naBounds.north - naBounds.south);
   var randomLng =
-    europeBounds.west +
-    Math.random() * (europeBounds.east - europeBounds.west);
+    naBounds.west +
+    Math.random() * (naBounds.east - naBounds.west);
 
   var sv = new google.maps.StreetViewService();
   sv.getPanorama(
@@ -145,7 +145,7 @@ function initMap(data, status) {
       zoom: 2.5,
       maxZoom: 10,
       minZoom: 2,
-      center: { lat: 45, lng: 5 }, 
+      center: { lat: 40, lng: -100 },
       streetViewControl: false,
       showRoadLabels: false,
       zoomControl: true,
@@ -232,7 +232,7 @@ function initMap(data, status) {
             Math.floor(distance) + " km";
         }
         var points = Math.round(
-          5000 * 0.998036 * Math.exp((-10 * distance) / 15000)
+          5000 * 0.998036 * Math.exp((-10 * distance) / 10000)
         );
         if (points <= 0) {
           points = 0;
